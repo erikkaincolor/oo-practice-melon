@@ -21,13 +21,14 @@ class MelonType:
         example code instantiate: watermelon = melonType(123124, hi, 1998, blue, mint, seedy, not popular)
         """
         self.pairings = [] #dont delete or mess with this, this could have been a dummy one, like something couldve been hardcoded as a great pairing for all melons
+        #calling add_pairings in line 36-ish powers this attribute...all the other attributes were passed in alreadyvia arguments
 
         #those arguments are assigned as attributes (hint: use self!)
-        self.code=code
-        self.first_harvest=first_harvest
-        self.color=color
-        self.is_seedless=is_seedless
-        self.is_bestseller=is_bestseller
+        self.code=code              #already passed in via argument BUT since it gets updated, it too has a method that powers its objects
+        self.first_harvest=first_harvest                #year
+        self.color=color                
+        self.is_seedless=is_seedless                #boolean
+        self.is_bestseller=is_bestseller               #true
         self.name=name
         print (f"this is a {MelonType}")
         
@@ -91,17 +92,17 @@ def make_melon_types():
 
     #hardcode all 6
     #self, code, first_harvest, color, is_seedless, is_bestseller, name
-    muskmelon = MelonType('musk', '1998', 'green', True, True, 'muskmelon')
+    muskmelon = MelonType('musk', '1998', 'green', True, True, 'muskmelon') #creating instances w/i a global function, and passing args
     casaba = MelonType('cas', '2003', 'orange', False, False, 'casaba')
     crenshaw = MelonType('cren', '1996', 'green', False, False, 'crenshaw')
     yellow_watermelon = MelonType('yw', '2013', 'yellow', False, True, 'yellow watermelon')
 
-    muskmelon.add_pairing(['mint'])
+    muskmelon.add_pairing(['mint'])             #assigning attributes to these same instances thatll hold data/data structures
     casaba.add_pairing(['mint', 'strawberies'])
     crenshaw.add_pairing(['proscuitto'])
     yellow_watermelon.add_pairing(['ice cream'])
 
-    all_melon_types = [muskmelon, casaba, crenshaw, yellow_watermelon]
+    all_melon_types = [muskmelon, casaba, crenshaw, yellow_watermelon] #list of instances we just created
 
     return all_melon_types
  
@@ -116,9 +117,11 @@ def print_pairing_info(melon_types):
         for p in i.pairings: #<-----reference init
             print (f"- {p}.")
 
+# melons = make_melon_types() #melons var will hold the RETURN of the function....global return basically<---usually last line of normal functions
+# print(melons) #will print wrapper
 
-
-
+# for m in melons:        #melons is the list w/ muskmelon, watermelon, etc
+#     print(m.name)       #will print actual name var of each (bc for-loop !!) instance
 
 
 def make_melon_type_lookup(melon_types):
@@ -135,12 +138,13 @@ def make_melon_type_lookup(melon_types):
     # (as strings) and whose values are the appropriate melon type instance for that reporting code."""
     melons = {} #must assign x to keys in dictionary
     
-    for i in melon_types:
+    for i in melon_types: #melon types is the return/list of melon types arguemnt for this func
         melons[i.code] = i #indexing via "name" NOT index.....melons['musk']......"i.code == 'musk'" <---dynamic "
         
+    # self.code=code
+    # muskmelon = MelonType('musk', '1998', 'green', True, True, 'muskmelon') 
     
     print(melons)
-
     return melons
 
 
@@ -188,17 +192,52 @@ def make_melon_type_lookup(melon_types):
 class Melon:
     """A melon in a melon harvest."""
 
-    # Fill in the rest
     # Needs __init__ and is_sellable methods
+    def __init__(self, ty_pe, s_rating, col_rating, h_field, harvester):
+        """"all melons are pre-disposed to all these attributes as well...regardless of type of melon"""
+        self.ty_pe = ty_pe
+        self.s_rating = s_rating
+        self.col_rating = col_rating
+        self.h_field = h_field
+        self.harvester = harvester
+        
+        if self.is_sellable() == True:
+            self.sellable = True
+        else:
+            self.sellable = False
+
+    def is_sellable(self):
+        """SELLABLE == shape ratings > 5, AND color ratings > 5, AND .field != 3 """
+        
+        size_min = 5            #writing eligibilty type variables here so future collaborators can write them here vs code code
+        color_min = 5
+        bad_field = 3
+        
+        if (self.s_rating > size_min) and (self.col_rating > color_min) and (self.h_field != bad_field):
+            return True
+        else:
+            return False
 
 
 def make_melons(melon_types):
     """Returns a list of Melon objects."""
 
-    # Fill in the rest
+    melon_1 = Melon("yw", 8, 7, 2, "Sheila")
+    melon_2 = Melon("yw", 3, 4, 2, "Sheila")
+    melon_3 = Melon("yw", 9, 8, 3, "Sheila")
+    melon_4 = Melon("cas", 10, 6, 35, "Sheila")
+    melon_5 = Melon("cren", 8, 9, 35, "Michael")
+    melon_6 = Melon('cren', 8, 2, 35, 'Michael')
+    melon_7 = Melon('cren', 2, 3, 4, 'Michael')
+    melon_8 = Melon('musk', 6, 7, 4, 'Michael')
+    melon_9 = Melon('yw', 7, 10, 3, 'Sheila')
 
+    all_harvested_melons = [melon_1, melon_2, melon_3, melon_4, melon_5, melon_6, melon_7, melon_8, melon_9]
+    
+    return all_harvested_melons
 
 def get_sellability_report(melons):
     """Given a list of melon object, prints whether each one is sellable."""
 
     # Fill in the rest
+
